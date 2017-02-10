@@ -150,7 +150,7 @@ int main() {
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 
-
+			al_clear_to_color(al_map_rgb(0, 0, 0));
 
 			//here's where the magic happens: draw the square to the screen
 			//at the coordinate position bouncer_x, bouncer_y

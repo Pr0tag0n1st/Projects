@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{14817DB4-1D82-4715-9E31-C3BF4DF30684}</ProjectGuid>
-    <RootNamespace>Bouncers</RootNamespace>
+    <ProjectGuid>{B071BD02-9021-4EC1-9DF3-190068342C26}</ProjectGuid>
+    <RootNamespace>Keyboards</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -110,7 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bouncers.cpp" />
+    <ClCompile Include="game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
