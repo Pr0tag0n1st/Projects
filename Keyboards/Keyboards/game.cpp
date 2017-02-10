@@ -41,10 +41,10 @@ int main(int argc, char **argv)
 
 	al_set_target_bitmap(square);
 
-	al_clear_to_color(al_map_rgb(255, 200, 255));
+	al_clear_to_color(al_map_rgb(255, 50, 50));
 	al_set_target_bitmap(square2);
 
-	al_clear_to_color(al_map_rgb(100, 100, 255));
+	al_clear_to_color(al_map_rgb(50, 50, 255));
 
 	al_set_target_bitmap(al_get_backbuffer(display));
 
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 			case ALLEGRO_KEY_D:
 				key[7] = true;
 				break;
-				
+
 			}
 		}
 		//has something been released on the keyboard?

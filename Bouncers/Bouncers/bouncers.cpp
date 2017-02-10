@@ -20,10 +20,10 @@ int main() {
 	float bouncer4_y = 30;
 
 	//here's the bouncer's x and y directions, initially set to -4, 4
-	float bouncer_dx = -4.0, bouncer_dy = 4.0;
+	float bouncer_dx = -8.0, bouncer_dy = 8.0;
 	float bouncer2_dx = 4.0, bouncer2_dy = -4.0;
 	float bouncer3_dx = 8.0, bouncer3_dy = -8.0;
-	float bouncer4_dx = -8.0, bouncer4_dy = 8.0;
+	float bouncer4_dx = -4.0, bouncer4_dy = 4.0;
 	bool redraw = true;
 
 	al_init();
@@ -94,36 +94,36 @@ int main() {
 				//flip the y direction
 				bouncer_dy = -bouncer_dy;
 			}
-				//if the box hits the left wall OR the right wall
-				if (bouncer2_x < 0 || bouncer2_x > 640 - 64) {
-					//flip the x direction
-					bouncer2_dx = -bouncer2_dx;
-				}
-				//if the box hits the top wall OR the bottom wall
-				if (bouncer2_y < 0 || bouncer2_y > 480 - 32) {
-					//flip the y direction
-					bouncer2_dy = -bouncer2_dy;
-				}
-					//if the box hits the left wall OR the right wall
-					if (bouncer3_x < 0 || bouncer3_x > 640 - 32) {
-						//flip the x direction
-						bouncer3_dx = -bouncer3_dx;
-					}
-					//if the box hits the top wall OR the bottom wall
-					if (bouncer3_y < 0 || bouncer3_y > 480 - 64) {
-						//flip the y direction
-						bouncer3_dy = -bouncer3_dy;
-					}
-						//if the box hits the left wall OR the right wall
-						if (bouncer4_x < 0 || bouncer4_x > 640 - 64) {
-							//flip the x direction
-							bouncer4_dx = -bouncer4_dx;
-						}
-						//if the box hits the top wall OR the bottom wall
-						if (bouncer4_y < 0 || bouncer4_y > 480 - 64) {
-							//flip the y direction
-							bouncer4_dy = -bouncer4_dy;
-						}
+			//if the box hits the left wall OR the right wall
+			if (bouncer2_x < 0 || bouncer2_x > 640 - 32) {
+				//flip the x direction
+				bouncer2_dx = -bouncer2_dx;
+			}
+			//if the box hits the top wall OR the bottom wall
+			if (bouncer2_y < 0 || bouncer2_y > 480 - 64) {
+				//flip the y direction
+				bouncer2_dy = -bouncer2_dy;
+			}
+			//if the box hits the left wall OR the right wall
+			if (bouncer3_x < 0 || bouncer3_x > 640 - 64) {
+				//flip the x direction
+				bouncer3_dx = -bouncer3_dx;
+			}
+			//if the box hits the top wall OR the bottom wall
+			if (bouncer3_y < 0 || bouncer3_y > 480 - 32) {
+				//flip the y direction
+				bouncer3_dy = -bouncer3_dy;
+			}
+			//if the box hits the left wall OR the right wall
+			if (bouncer4_x < 0 || bouncer4_x > 640 - 64) {
+				//flip the x direction
+				bouncer4_dx = -bouncer4_dx;
+			}
+			//if the box hits the top wall OR the bottom wall
+			if (bouncer4_y < 0 || bouncer4_y > 480 - 64) {
+				//flip the y direction
+				bouncer4_dy = -bouncer4_dy;
+			}
 
 			//really important code!
 			//move the box in a diagonal
