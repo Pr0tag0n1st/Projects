@@ -1,0 +1,6 @@
+﻿1>------ Build started: Project: Trig, Configuration: Debug Win32 ------
+1>  Sick.cpp
+1>c:\users\game110am\source\repos\projects\trig\trig\sick.cpp(65): warning C4309: 'argument': truncation of constant value
+1>  Trig.vcxproj -> C:\Users\Game110AM\Source\Repos\Projects\Trig\Debug\Trig.exe
+1>  Trig.vcxproj -> C:\Users\Game110AM\Source\Repos\Projects\Trig\Debug\Trig.pdb (Partial PDB)
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

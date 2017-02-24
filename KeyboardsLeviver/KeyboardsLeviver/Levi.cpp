@@ -2,7 +2,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-int main()
+
+int bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h);
+int main(int argc, char **argv)
 {
 	al_init();
 	al_init_font_addon();
@@ -30,8 +32,8 @@ int main()
 	//this controls our game loop
 	bool doexit = false;
 
-	
-	
+
+
 	//get the keyboard ready to use
 	al_install_keyboard();
 
@@ -118,8 +120,8 @@ int main()
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-	/*	if (ev.type == ALLEGRO_EVENT_TIMER){
-			if (square_y == square2_y-32 || square_x == square2_x+32){
+		/*	if (ev.type == ALLEGRO_EVENT_TIMER){
+		if (square_y == square2_y-32 || square_x == square2_x+32){
 
 
 		}*/
@@ -219,13 +221,10 @@ int main()
 			//here's where the bitmap is actually drawn somewhere else
 			al_draw_bitmap(square, square_x, square_y, 0);
 			al_draw_bitmap(square2, square2_x, square2_y, 0);
-			if (square2_x > square_x > square2_x - 32 || square2_y > square_y > square2_y - 32)
-				al_draw_text(font, ALLEGRO_COLOR(al_map_rgb(255, 255, 255)), 320, 240, 1, "Collision!");
-			else if (square_x>square2_x>square_x-32 || square_y>square2_y>square_y)
-				al_draw_text(font, ALLEGRO_COLOR(al_map_rgb(255, 255, 255)), 320, 240, 1, "Collision!");
 			al_flip_display();
-
-		
+			if (bounding_box_collision(square_x, square_y, 32, 2, square2_x, square2_y, 32, 32)) {
+				al_draw_text(font, ALLEGRO_COLOR(al_map_rgb(255, 255, 255)), 420, 250, 1, "Happy Valentine's Day!");
+			}
 		}
 	}
 
@@ -235,4 +234,19 @@ int main()
 	al_destroy_event_queue(event_queue);
 
 	return 0;
+}
+
+int bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h)
+{
+	if ((b1_x > b2_x + b2_w - 1) || // is b1 on the right side of b2?
+		(b1_y > b2_y + b2_h - 1) || // is b1 under b2?
+		(b2_x > b1_x + b1_w - 1) || // is b2 on the right side of b1?
+		(b2_y > b1_y + b1_h - 1))   // is b2 under b1?
+	{
+		// no collision
+		return 0;
+	}
+
+	// collision
+	return 1;
 }
