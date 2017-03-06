@@ -4,43 +4,61 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>//for future use
+#include<iostream>
+using namespace std;
 #include <stdio.h>
+	float ball_x = 288;
+	float ball_y = 208;
+	float Lpaddle_x = 0;
+	float Lpaddle_y = 0;
+	float Rpaddle_x = 624;
+	float Rpaddle_y = 0;//coordinates and such
+	float ball_dx = 8.0, ball_dy = -8.0;
+	int Lscore = 0;
+	int Rscore = 0;
+	bool Collision(int b1x, int b1y, int b2x, int b2y);
+	
 int main() {
+	cout << "flag1" << endl;
 	ALLEGRO_DISPLAY*display = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = NULL;
 	ALLEGRO_TIMER*timer = NULL;
 	ALLEGRO_BITMAP*ball = NULL;
 	ALLEGRO_BITMAP*Lpaddle = NULL;
 	ALLEGRO_BITMAP*Rpaddle = NULL;//create everything
-	ALLEGRO_FONT*font = al_create_builtin_font();
-	float ball_x = 288;
-	float ball_y = 208;
-	float Lpaddle_x = 0;
-	float Lpaddle_y = 0;
-	float Rpaddle_x = 592;
-	float Rpaddle_y = 0;//coordinates and such
-	float ball_dx = 4.0, ball_dy = 2.0;
+	ALLEGRO_FONT*font = NULL;
+	ALLEGRO_SAMPLE*sample = NULL;
 	
 
-	bool key[4]{ false, false, false, false };
+
+	bool keyl[2]{false,false };
+	bool keyr[2]{ false,false };
 	bool redraw = true;
 	bool doexit = false;
-
+	cout << "flag2" << endl;
 	al_init();
 	al_init_primitives_addon();
+	cout << "flag2.11" << endl;
 	al_init_font_addon();
 	al_init_ttf_addon();
+	cout << "flag2.12" << endl;
+	al_install_audio(); //mo added this
 	al_init_acodec_addon();//future use
-	al_install_keyboard;
-
-	al_create_display(640, 480);
-	timer = al_create_timer(0.2);
-
+	cout << "flag2.13" << endl;
+	al_install_keyboard();
+	cout << "flag2.14" << endl;
+	al_reserve_samples(1);
+	cout << "flag2.1" << endl;
+	display = al_create_display(640, 480);
+	timer = al_create_timer(0.02);
+	font = al_create_builtin_font();
 	ball = al_create_bitmap(32, 32);
-	Lpaddle = al_create_bitmap(48, 96);
-	Rpaddle = al_create_bitmap(48, 96);
+	Lpaddle = al_create_bitmap(16, 96);
+	Rpaddle = al_create_bitmap(16, 96);
 	al_set_target_bitmap(ball);
+
 	al_clear_to_color(al_map_rgb(255, 255, 255));
+	cout << "flag2.2" << endl;
 	al_set_target_bitmap(Lpaddle);
 	al_clear_to_color(al_map_rgb(255, 200, 200));
 	al_set_target_bitmap(Rpaddle);
@@ -55,49 +73,112 @@ int main() {
 	while (!doexit) {
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
+		al_draw_text(font, al_map_rgb(255, 255, 255), 320, 40, 1, ("0 - 0"));
+		cout << "flag3" << endl;
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			if (key[0] && Lpaddle_y >= 0) {
+			if (keyl[0] && Lpaddle_y >= 0) {
 				Lpaddle_y -= 4.0;//paddle up
 			}
-			if (key[1] && Lpaddle_y <= 480 - 96) {
+			if (keyl[1] && Lpaddle_y <= 480 - 96) {
 				Lpaddle_y += 4.0;//paddle down
 			}
-			if (key[2] && Lpaddle_x >= 0) {
+			if (keyr[0] && Rpaddle_y >= 0) {
 				Rpaddle_y -= 4.0;//paddle up
 			}
-			if (key[3] && Lpaddle_x <= 480 - 96) {
+			if (keyr[1] && Rpaddle_y <= 480 - 96) {
 				Rpaddle_y += 4.0;//paddle down
 			}
-		redraw = true;
+			redraw = true;
 		}//end of movement
+		if (ev.type == ALLEGRO_EVENT_TIMER) {
+		
+			//cout << "calling collision with " << b1x << " " << b1y << " " << b2x << " " << b2y << endl;
+			if (Collision(ball_x, ball_y, Lpaddle_x, Lpaddle_y)) {
+				ball_dx = -ball_dx;
+				//ball_dy = -ball_dy;
+				//add wacky sound effect
+				sample = al_load_sample("Beep.wav");
+				al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+				//increase your score
+		}
+
+			if (Collision(ball_x, ball_y, Rpaddle_x, Rpaddle_y)) {
+				ball_dx = -ball_dx;
+				//ball_dy = -ball_dy;
+				sample = al_load_sample("Beep.wav");
+				al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+			}
+			
+			//if the box hits the top wall OR the bottom wall
+			if (ball_y < 0 || ball_y > 480 - 32) {
+				//flip the y direction
+				ball_dy = -ball_dy;
+				sample = al_load_sample("Beep.wav");
+				al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+			}
+
+			//if the box hits the top wall OR the bottom wall
+			if (ball_x < 0 || ball_x > 640 - 32) {
+				//flip the y direction
+				ball_dy = -ball_dy;
+				ball_dx = -ball_dx;
+				//decrease lives for player
+			}
+				
+			ball_x += ball_dx;
+			ball_y += ball_dy;
+		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}//end of display close
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_UP://up for p1
-				key[0] = true;
+				keyl[0] = true;
 				break;
 			case ALLEGRO_KEY_DOWN:
-				key[1] = true;//down for p1
+				keyl[1] = true;//down for p1
 				break;
 			case ALLEGRO_KEY_W:
-				key[2] = true;//up for p2
+				keyr[0] = true;//up for p2
 				break;
 			case ALLEGRO_KEY_S:
-				key[3] = true;//down for p2
+				keyr[1] = true;//down for p2
 				break;
+			case ALLEGRO_KEY_LEFT://up for p1
+				break;
+		
 			case ALLEGRO_KEY_ESCAPE:
 				doexit = true;
 				break;
 			}//end of keycode switch
+		
 		}//end of keycode stuff
+		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_UP://up for p1
+				keyl[0] = false;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				keyl[1] = false;//down for p1
+				break;
+			case ALLEGRO_KEY_W:
+				keyr[0] = false;//up for p2
+				break;
+			case ALLEGRO_KEY_S:
+				keyr[1] = false;//down for p2
+				break;
+			}
+		
+		}
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_bitmap(ball, ball_x, ball_y, 0);
 			al_draw_bitmap(Lpaddle, Lpaddle_x, Lpaddle_y, 0);
 			al_draw_bitmap(Rpaddle, Rpaddle_x, Rpaddle_y, 0);//redraws
+
+			al_flip_display();
 		}//end of redraw
 	}//end of while
 	al_destroy_bitmap(ball);
@@ -107,3 +188,22 @@ int main() {
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);//destruction
 }//end of main
+
+
+
+bool Collision(int b1x, int b1y, int b2x, int b2y){
+	//cout << "b1x and b1x are" << b1x << " , " << b1y << endl;
+	//cout << "b2x and b2x are" << b2x << " , " << b2y << endl;
+	if ((b1x+32 < b2x) || //is b1 to the left of b2
+		(b1x > b2x+16) || //is b1 to the right of b2
+		(b1y > b2y+96) || //is b1 below b2
+		(b1y+32 < b2y) //is b1 above b2
+)
+		return 0;
+	else {
+		printf("collision!");
+		return 1;
+
+	}
+
+}
